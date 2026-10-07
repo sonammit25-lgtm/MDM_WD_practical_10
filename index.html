@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>StudyTrack - Assignment Dashboard</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#4f46e5",
+                        secondary: "#7c3aed"
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-slate-100 min-h-screen text-slate-800">
+
+    <header class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row
+                    justify-between items-center gap-3">
+
+            <div>
+                <h1 class="text-2xl font-bold text-indigo-600">
+                    📚 StudyTrack
+                </h1>
+
+                <p class="text-sm text-gray-500">
+                    Interactive Syllabus & Assignment Dashboard
+                </p>
+            </div>
+
+            <div class="text-sm text-gray-500">
+                Student Dashboard
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-6">
+
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+
+            <div class="bg-white rounded-xl shadow p-5">
+                <p class="text-gray-500 text-sm">Total Assignments</p>
+                <h2 id="totalAssignments"
+                    class="text-3xl font-bold mt-2 text-indigo-600">
+                    0
+                </h2>
+            </div>
+
+            <div class="bg-white rounded-xl shadow p-5">
+                <p class="text-gray-500 text-sm">Pending</p>
+                <h2 id="pendingAssignments"
+                    class="text-3xl font-bold mt-2 text-orange-500">
+                    0
+                </h2>
+            </div>
+
+            <div class="bg-white rounded-xl shadow p-5">
+                <p class="text-gray-500 text-sm">Completed</p>
+                <h2 id="completedAssignments"
+                    class="text-3xl font-bold mt-2 text-green-600">
+                    0
+                </h2>
+            </div>
+
+            <div class="bg-white rounded-xl shadow p-5">
+                <p class="text-gray-500 text-sm">Current Grade</p>
+                <h2 id="currentGrade"
+                    class="text-3xl font-bold mt-2 text-purple-600">
+                    0%
+                </h2>
+            </div>
+
+        </section>
+
+        <section class="bg-gradient-to-r from-indigo-600 to-purple-600
+                        text-white rounded-2xl shadow-lg p-6 mb-6">
+
+            <div class="flex flex-col md:flex-row justify-between
+                        items-center gap-5">
+
+                <div>
+                    <p class="text-indigo-100 text-sm">
+                        ⏰ NEXT DEADLINE
+                    </p>
+
+                    <h2 id="nextAssignment"
+                        class="text-2xl font-bold mt-1">
+                        No upcoming assignment
+                    </h2>
+
+                    <p id="nextCourse"
+                       class="text-indigo-100 mt-1">
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-4 gap-2 text-center">
+
+                    <div class="bg-white/20 rounded-lg p-3 min-w-[65px]">
+                        <div id="days" class="text-2xl font-bold">00</div>
+                        <div class="text-xs">Days</div>
+                    </div>
+
+                    <div class="bg-white/20 rounded-lg p-3 min-w-[65px]">
+                        <div id="hours" class="text-2xl font-bold">00</div>
+                        <div class="text-xs">Hours</div>
+                    </div>
+
+                    <div class="bg-white/20 rounded-lg p-3 min-w-[65px]">
+                        <div id="minutes" class="text-2xl font-bold">00</div>
+                        <div class="text-xs">Minutes</div>
+                    </div>
+
+                    <div class="bg-white/20 rounded-lg p-3 min-w-[65px]">
+                        <div id="seconds" class="text-2xl font-bold">00</div>
+                        <div class="text-xs">Seconds</div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+
+            <div class="lg:col-span-2 bg-white rounded-xl shadow p-6">
+
+                <h2 class="text-xl font-bold mb-5">
+                    ➕ Add Assignment
+                </h2>
+
+                <form id="assignmentForm"
+                      class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                    <div>
+                        <label class="block text-sm font-medium mb-1">
+                            Assignment Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="assignmentName"
+                            placeholder="e.g. Java Mini Project"
+                            required
+                            class="w-full border rounded-lg px-3 py-2
+                                   focus:ring-2 focus:ring-indigo-500
+                                   outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium mb-1">
+                            Course
+                        </label>
+
+                        <select
+                            id="course"
+                            required
+                            class="w-full border rounded-lg px-3 py-2
+                                   focus:ring-2 focus:ring-indigo-500
+                                   outline-none">
+
+                            <option value="">Select Course</option>
+                            <option value="Web Development">Web Development</option>
+                            <option value="Java">Java</option>
+                            <option value="Data Structures">Data Structures</option>
+                            <option value="DBMS">DBMS</option>
+                            <option value="Computer Networks">Computer Networks</option>
+
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium mb-1">
+                            Weight (%)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="weight"
+                            min="1"
+                            max="100"
+                            placeholder="e.g. 20"
+                            required
+                            class="w-full border rounded-lg px-3 py-2
+                                   focus:ring-2 focus:ring-indigo-500
+                                   outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium mb-1">
+                            Due Date & Time
+                        </label>
+
+                        <input
+                            type="datetime-local"
+                            id="dueDate"
+                            required
+                            class="w-full border rounded-lg px-3 py-2
+                                   focus:ring-2 focus:ring-indigo-500
+                                   outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium mb-1">
+                            Marks Obtained
+                        </label>
+
+                        <input
+                            type="number"
+                            id="marks"
+                            min="0"
+                            placeholder="e.g. 85"
+                            required
+                            class="w-full border rounded-lg px-3 py-2
+                                   focus:ring-2 focus:ring-indigo-500
+                                   outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium mb-1">
+                            Maximum Marks
+                        </label>
+
+                        <input
+                            type="number"
+                            id="maxMarks"
+                            min="1"
+                            placeholder="e.g. 100"
+                            required
+                            class="w-full border rounded-lg px-3 py-2
+                                   focus:ring-2 focus:ring-indigo-500
+                                   outline-none">
+                    </div>
+
+                    <div class="md:col-span-2">
+
+                        <button
+                            type="submit"
+                            class="w-full bg-indigo-600 hover:bg-indigo-700
+                                   text-white font-semibold py-2.5 rounded-lg
+                                   transition">
+
+                            Add Assignment
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+            <div class="bg-white rounded-xl shadow p-6">
+
+                <h2 class="text-xl font-bold mb-4">
+                    🎯 Grade Calculator
+                </h2>
+
+                <p class="text-sm text-gray-500 mb-5">
+                    Your current weighted grade is calculated automatically.
+                </p>
+
+                <div class="text-center py-5">
+
+                    <div id="gradeCircle"
+                         class="mx-auto w-32 h-32 rounded-full
+                                border-8 border-indigo-500
+                                flex items-center justify-center">
+
+                        <span id="gradeDisplay"
+                              class="text-3xl font-bold text-indigo-600">
+                            0%
+                        </span>
+
+                    </div>
+
+                    <p class="mt-4 text-gray-500">
+                        Current Performance
+                    </p>
+
+                </div>
+
+                <div class="mt-4">
+
+                    <div class="flex justify-between text-sm mb-1">
+                        <span>Progress</span>
+                        <span id="gradeText">0%</span>
+                    </div>
+
+                    <div class="w-full bg-gray-200 rounded-full h-3">
+
+                        <div id="gradeBar"
+                             class="bg-indigo-600 h-3 rounded-full"
+                             style="width: 0%">
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="bg-white rounded-xl shadow p-6">
+
+            <div class="flex flex-col md:flex-row
+                        justify-between items-start md:items-center
+                        gap-4 mb-5">
+
+                <div>
+                    <h2 class="text-xl font-bold">
+                        📝 My Assignments
+                    </h2>
+
+                    <p class="text-sm text-gray-500">
+                        Manage your upcoming academic tasks.
+                    </p>
+                </div>
+
+                <select
+                    id="filter"
+                    onchange="displayAssignments()"
+                    class="border rounded-lg px-3 py-2">
+
+                    <option value="all">All Assignments</option>
+                    <option value="pending">Pending</option>
+                    <option value="completed">Completed</option>
+
+                </select>
+
+            </div>
+
+            <div id="assignmentList"
+                 class="space-y-4">
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer class="text-center text-gray-500 text-sm py-6">
+
+        <p>
+            StudyTrack © 2026 | Interactive Student Dashboard
+        </p>
+
+    </footer>
+
+<script>
+
+    let assignments = [
+        {
+            id: 1,
+            name: "Web Development Project",
+            course: "Web Development",
+            weight: 20,
+            dueDate: "2026-10-10T18:00",
+            marks: 90,
+            maxMarks: 100,
+            completed: false
+        },
+
+        {
+            id: 2,
+            name: "Java OOP Assignment",
+            course: "Java",
+            weight: 15,
+            dueDate: "2026-10-12T20:00",
+            marks: 80,
+            maxMarks: 100,
+            completed: false
+        },
+
+        {
+            id: 3,
+            name: "DBMS Quiz",
+            course: "DBMS",
+            weight: 10,
+            dueDate: "2026-10-15T10:00",
+            marks: 70,
+            maxMarks: 100,
+            completed: false
+        }
+    ];
+
+    function displayAssignments() {
+
+        let list = document.getElementById("assignmentList");
+
+        let filter = document.getElementById("filter").value;
+
+        list.innerHTML = "";
+
+        let filteredAssignments = assignments.filter(function(assignment) {
+
+            if (filter === "pending") {
+                return assignment.completed === false;
+            }
+
+            if (filter === "completed") {
+                return assignment.completed === true;
+            }
+
+            return true;
+
+        });
+
+        if (filteredAssignments.length === 0) {
+
+            list.innerHTML = `
+                <div class="text-center py-10 text-gray-500">
+                    No assignments found.
+                </div>
+            `;
+
+            return;
+        }
+
+        filteredAssignments.forEach(function(assignment) {
+
+            let percentage =
+                (assignment.marks / assignment.maxMarks) * 100;
+
+            let date = new Date(assignment.dueDate);
+
+            let formattedDate =
+                date.toLocaleString();
+
+            let statusClass =
+                assignment.completed
+                ? "bg-green-100 text-green-700"
+                : "bg-orange-100 text-orange-700";
+
+            let statusText =
+                assignment.completed
+                ? "Completed"
+                : "Pending";
+
+            let card = document.createElement("div");
+
+            card.className =
+                "border rounded-xl p-4 hover:shadow-md transition";
+
+            card.innerHTML = `
+
+                <div class="flex flex-col md:flex-row
+                            justify-between gap-4">
+
+                    <div class="flex-1">
+
+                        <div class="flex flex-wrap
+                                    items-center gap-2">
+
+                            <h3 class="font-bold text-lg">
+                                ${assignment.name}
+                            </h3>
+
+                            <span class="text-xs px-2 py-1
+                                         rounded-full ${statusClass}">
+                                ${statusText}
+                            </span>
+
+                        </div>
+
+                        <p class="text-sm text-indigo-600 mt-1">
+                            ${assignment.course}
+                        </p>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-3
+                                    gap-2 mt-3 text-sm text-gray-500">
+
+                            <span>
+                                 ${formattedDate}
+                            </span>
+
+                            <span>
+                                 Weight: ${assignment.weight}%
+                            </span>
+
+                            <span>
+                                 ${assignment.marks}/${assignment.maxMarks}
+                                (${percentage.toFixed(1)}%)
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="flex items-center gap-2">
+
+                        <button
+                            onclick="toggleComplete(${assignment.id})"
+                            class="px-3 py-2 rounded-lg
+                                   bg-green-100 text-green-700
+                                   hover:bg-green-200">
+                            ✓
+                        </button>
+
+                        <button
+                            onclick="deleteAssignment(${assignment.id})"
+                            class="px-3 py-2 rounded-lg
+                                   bg-red-100 text-red-600
+                                   hover:bg-red-200">
+                            🗑
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+            list.appendChild(card);
+
+        });
+
+        updateStatistics();
+
+        calculateGrade();
+
+        updateCountdown();
+
+    }
+
+    document
+        .getElementById("assignmentForm")
+        .addEventListener("submit", function(event) {
+
+            event.preventDefault();
+
+            let name =
+                document.getElementById("assignmentName").value;
+
+            let course =
+                document.getElementById("course").value;
+
+            let weight =
+                Number(document.getElementById("weight").value);
+
+            let dueDate =
+                document.getElementById("dueDate").value;
+
+            let marks =
+                Number(document.getElementById("marks").value);
+
+            let maxMarks =
+                Number(document.getElementById("maxMarks").value);
+
+            if (marks > maxMarks) {
+
+                alert("Marks obtained cannot be greater than maximum marks.");
+
+                return;
+            }
+
+            let newAssignment = {
+
+                id: Date.now(),
+
+                name: name,
+
+                course: course,
+
+                weight: weight,
+
+                dueDate: dueDate,
+
+                marks: marks,
+
+                maxMarks: maxMarks,
+
+                completed: false
+
+            };
+
+            assignments.push(newAssignment);
+
+            document
+                .getElementById("assignmentForm")
+                .reset();
+
+            displayAssignments();
+
+        });
+
+    function deleteAssignment(id) {
+
+        assignments = assignments.filter(function(assignment) {
+
+            return assignment.id !== id;
+
+        });
+
+        displayAssignments();
+
+    }
+
+    function toggleComplete(id) {
+
+        assignments.forEach(function(assignment) {
+
+            if (assignment.id === id) {
+
+                assignment.completed =
+                    !assignment.completed;
+
+            }
+
+        });
+
+        displayAssignments();
+
+    }
+
+    function updateStatistics() {
+
+        let total =
+            assignments.length;
+
+        let completed =
+            assignments.filter(function(assignment) {
+
+                return assignment.completed;
+
+            }).length;
+
+        let pending =
+            total - completed;
+
+        document
+            .getElementById("totalAssignments")
+            .innerText = total;
+
+        document
+            .getElementById("completedAssignments")
+            .innerText = completed;
+
+        document
+            .getElementById("pendingAssignments")
+            .innerText = pending;
+
+    }
+
+    function calculateGrade() {
+
+        if (assignments.length === 0) {
+
+            setGrade(0);
+
+            return;
+
+        }
+
+        let totalWeight = 0;
+
+        let weightedMarks = 0;
+
+        assignments.forEach(function(assignment) {
+
+            let percentage =
+                (assignment.marks / assignment.maxMarks) * 100;
+
+            weightedMarks +=
+                percentage * assignment.weight;
+
+            totalWeight += assignment.weight;
+
+        });
+
+        let grade = 0;
+
+        if (totalWeight > 0) {
+
+            grade =
+                weightedMarks / totalWeight;
+
+        }
+
+        setGrade(grade);
+
+    }
+
+    function setGrade(grade) {
+
+        grade = Math.min(100, Math.max(0, grade));
+
+        let roundedGrade =
+            grade.toFixed(1);
+
+        document
+            .getElementById("currentGrade")
+            .innerText = roundedGrade + "%";
+
+        document
+            .getElementById("gradeDisplay")
+            .innerText = roundedGrade + "%";
+
+        document
+            .getElementById("gradeText")
+            .innerText = roundedGrade + "%";
+
+        document
+            .getElementById("gradeBar")
+            .style.width = grade + "%";
+
+    }
+
+    function updateCountdown() {
+
+        let now = new Date();
+
+        let upcoming =
+            assignments.filter(function(assignment) {
+
+                return (
+                    !assignment.completed &&
+                    new Date(assignment.dueDate) > now
+                );
+
+            });
+
+        if (upcoming.length === 0) {
+
+            document
+                .getElementById("nextAssignment")
+                .innerText =
+                "No upcoming assignment";
+
+            document
+                .getElementById("nextCourse")
+                .innerText = "";
+
+            setCountdown(0);
+
+            return;
+
+        }
+
+        upcoming.sort(function(a, b) {
+
+            return new Date(a.dueDate) -
+                   new Date(b.dueDate);
+
+        });
+
+        let next = upcoming[0];
+
+        let deadline =
+            new Date(next.dueDate);
+
+        let difference =
+            deadline - now;
+
+        document
+            .getElementById("nextAssignment")
+            .innerText =
+            next.name;
+
+        document
+            .getElementById("nextCourse")
+            .innerText =
+            next.course;
+
+        setCountdown(difference);
+
+    }
+
+    function setCountdown(milliseconds) {
+
+        if (milliseconds <= 0) {
+
+            document.getElementById("days").innerText = "00";
+
+            document.getElementById("hours").innerText = "00";
+
+            document.getElementById("minutes").innerText = "00";
+
+            document.getElementById("seconds").innerText = "00";
+
+            return;
+
+        }
+
+        let totalSeconds =
+            Math.floor(milliseconds / 1000);
+
+        let days =
+            Math.floor(totalSeconds / (60 * 60 * 24));
+
+        let hours =
+            Math.floor(
+                (totalSeconds % (60 * 60 * 24)) /
+                (60 * 60)
+            );
+
+        let minutes =
+            Math.floor(
+                (totalSeconds % (60 * 60)) /
+                60
+            );
+
+        let seconds =
+            totalSeconds % 60;
+
+        document.getElementById("days").innerText =
+            String(days).padStart(2, "0");
+
+
+        document.getElementById("hours").innerText =
+            String(hours).padStart(2, "0");
+
+
+        document.getElementById("minutes").innerText =
+            String(minutes).padStart(2, "0");
+
+
+        document.getElementById("seconds").innerText =
+            String(seconds).padStart(2, "0");
+
+    }
+
+    setInterval(function() {
+
+        updateCountdown();
+
+    }, 1000);
+
+    displayAssignments();
+
+</script>
+
+</body>
+</html>
